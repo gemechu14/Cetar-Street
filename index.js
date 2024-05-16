@@ -13,19 +13,20 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/uploads", express.static("./uploads/"));
-// const Company= require("./models/company.js")
-// const Address=require("./models/address.js")
-// const Permission=require("./models/permission.js")
-// const RolePermission=require("./models/rolePermission.js")
-// const Tenant=require("./models/tenant.js")
-// const UserRole=require("./models/userRole.js")
-// const User=require("./models/Users.js")
+
 const userRoutes=require("./routes/userRoutes.js");
-const roleRoutes=require("./routes/roleRoutes.js")
+const roleRoutes=require("./routes/roleRoutes.js");
+const permissionRoutes=require("./routes/permissionRoutes.js");
+const authRoutes=require("./routes/authRoutes.js");
+const tenantRoutes=require("./routes/tenantRoutes.js");
+// const UserTenant=require("./models/userTenant.js")
 
 
 app.use("/api/v1/users",userRoutes);
-app.use("/api/v1/roles", roleRoutes)
+app.use("/api/v1/roles", roleRoutes);
+app.use("/api/v1/permissions",permissionRoutes);
+app.use("/",authRoutes);
+app.use("/api/v1/tenants",tenantRoutes);
 
 
 

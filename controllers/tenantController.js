@@ -6,16 +6,16 @@ const createError = require("../utils/errorResponse.js");
 const { create } = require("domain");
 const User = require("../models/Users.js");
 const UserRole = require("../models/userRole.js");
+const Tenant = require("../models/tenant.js");
 
 // GET ALL USER
-exports.getAllRoles = async (req, res, next) => {
+exports.getAllTenants = async (req, res, next) => {
   try {
-    const roles = await Role.findAll({
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+    const tenants = await Tenant.findAll({
     });
 
     return res.status(200).json({
-      data: roles,
+      data: tenants,
     });
   } catch (error) {
     return next(createError.createError(500, "Internal server Error"));
@@ -23,25 +23,22 @@ exports.getAllRoles = async (req, res, next) => {
 };
 
 // CREATE ROLE
-exports.createRole = async (req, res, next) => {
+exports.createTenant = async (req, res, next) => {
   try {
-    const { name, description,tenantId } = req.body;
-    const existingRole = await Role.findOne({ where: { name } });
-    if (existingRole) {
-      return next(createError.createError(500, "Role already defined "));
-    }
+    const { tenantName, tenantStatus,isSuperTenant } = req.body;
 
-    const newURole = await Role.create({
-      name,
-      description,
-      tenantId
+
+
+    const tenant = await Tenant.create({
+        tenantName,
+        tenantStatus,
+        isSuperTenant
     });
 
     res
       .status(201)
-      .json({ message: "Role registered successfully", role: newURole });
+      .json({ message: "Tenant registered successfully", tenant: tenant });
   } catch (error) {
-    console.log(error)
     return next(createError.createError(500, "Internal server Error"));
   }
 };

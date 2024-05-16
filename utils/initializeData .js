@@ -1,4 +1,3 @@
-// initializeRoles.js
 const express =require("express")
 const Role = require('../models/role.js');
 const createError=require("./errorResponse.js")

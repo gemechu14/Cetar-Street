@@ -20,10 +20,7 @@ const User = sequelize.define("User", {
     allowNull: false,
   },
 
-  // role: {
-  //   type: DataTypes.STRING,
-  //   defaultValue: "user",
-  // },
+
   isSuperTenant:{
     type:DataTypes.BOOLEAN,
     defaultValue: false
