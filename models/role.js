@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../database/db.js");
+const Tenant = require("./tenant.js");
 
 const Role = sequelize.define("Role", {
   name: {
@@ -13,5 +14,6 @@ const Role = sequelize.define("Role", {
 
 });
 
-
+Role.belongsTo(Tenant);
+Tenant.hasMany(Role);
 module.exports = Role;

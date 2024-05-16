@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../database/db')
 const Company = require('./company.js')
-const User=require("../models/Users.js");
+const Permission=require("../models/permission.js")
 const Role= require("../models/role.js")
 
 const RolePermission = sequelize.define('RolePermission', {
@@ -12,14 +12,11 @@ const RolePermission = sequelize.define('RolePermission', {
   },
  
 })
-// RolePermission.sync({ force: true }).then(() => console.log('positon model is ready'));
-User.belongsToMany(Role, {
+Permission.belongsToMany(Role, {
   through: RolePermission,
 });
-Role.belongsToMany(User, {
+Role.belongsToMany(Permission, {
   through: RolePermission,
 });
-// Company.hasMany(RolePermission)
-// RolePermission.belongsTo(Company)
 
 module.exports = RolePermission

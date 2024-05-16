@@ -11,8 +11,14 @@ const Tenant = sequelize.define("Tenant", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  isSuperTenant:{
+    type: DataTypes.BOOLEAN,
+   defaultValue: false
+  }
 
 });
+
+
 
 
 module.exports = Tenant;
