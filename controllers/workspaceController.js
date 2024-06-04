@@ -2,21 +2,9 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const createError=require("../utils/errorResponse.js")
-
 const app = express();
 app.use(bodyParser.json());
 const { URLSearchParams } = require('url');
-
-
-
-// const tenantId = '80dd5331-c6a7-48ef-9341-097b33c8f6cc'; // Replace with your Tenant ID
-// const clientId = 'b505a8a8-5160-4c22-96fc-ff5ec5458a05'; // Replace with your Client ID
-// const clientSecret = 'SWO8Q~0zRf8hp-UwPub0IByO2nyzm9MedxtMCbVv'; // Replace with your Client Secret
-//80dd5331-c6a7-48ef-9341-097b33c8f6cc
-
-//0e127f52-fdfc-409b-8ae3-6fa4fa9b4f46
-
-//0c2bb19d-b943-4688-b309-a2828bd6b437
 
 
 
@@ -42,7 +30,7 @@ exports.getAccessToken = async (req, res, next) => {
     params.append('grant_type', 'client_credentials');
     params.append('client_id', process.env.CLIENT_ID);
     params.append('client_secret', process.env.CLIENT_SECRET);
-    params.append('scope', 'https://analysis.windows.net/powerbi/api/.default');
+    params.append('scope', process.env.SCOPE);
 
     try {
         const response = await axios.post(tokenUrl, params.toString(), {
@@ -52,7 +40,6 @@ exports.getAccessToken = async (req, res, next) => {
         });
         return res.status(200).json(response.data);
     } catch (error) {
-        // Enhanced error logging for debugging
         console.error('Error getting token:', error.response ? error.response.data : error.message);
         return res.status(500).json({
             message: error.message,
@@ -71,7 +58,7 @@ exports.getWorkspaces= async(req,res,next)=>{
         params.append('grant_type', 'client_credentials');
         params.append('client_id', process.env.CLIENT_ID);
         params.append('client_secret', process.env.CLIENT_SECRET);
-        params.append('scope', 'https://analysis.windows.net/powerbi/api/.default');
+        params.append('scope', process.env.SCOPE);
     
        
             const response = await axios.post(tokenUrl, params.toString(), {
@@ -80,11 +67,7 @@ exports.getWorkspaces= async(req,res,next)=>{
                 }
             });
             const token = response?.data?.access_token;
-            // return res.status(200).json(token);
-       
-
-        // return res.status(200).json({token:token})
-        // Return the token first
+         
         const url = 'https://api.powerbi.com/v1.0/myorg/groups';
         const response1 = await axios.get(url, {
             headers: {
@@ -94,28 +77,14 @@ exports.getWorkspaces= async(req,res,next)=>{
         });
         return res.status(200).json(response1.data);
     } catch (error) {
-        console.log(error)
+        // console.log(error)
      
         return next(createError.createError(500,error))
         
     }
 }
 
-// const getWorkspaces = async (token) => {
-//     const url = 'https://api.powerbi.com/v1.0/myorg/groups';
 
-
-//     try {
-//         const response = await axios.get(url, {
-//             headers: {
-//                 Authorization: `Bearer ${token}`
-//             }
-//         });
-//         return response.data.value;
-//     } catch (error) {
-//         console.error('Error getting workspaces:', error);
-//     }
-// };
 
 const getDatasets = async (token, groupId) => {
     const url = `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/datasets`;
