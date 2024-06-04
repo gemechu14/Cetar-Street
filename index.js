@@ -22,7 +22,7 @@ const roleRoutes=require("./routes/roleRoutes.js");
 const permissionRoutes=require("./routes/permissionRoutes.js");
 const authRoutes=require("./routes/authRoutes.js");
 const tenantRoutes=require("./routes/tenantRoutes.js");
-// const workspacesRoutes= require("./routes/workspaceRoutes.js")
+const workspacesRoutes= require("./routes/workspaceRoutes.js")
 // const UserTenant=require("./models/userTenant.js")
 
 
@@ -31,7 +31,7 @@ app.use("/api/v1/roles", roleRoutes);
 app.use("/api/v1/permissions",permissionRoutes);
 app.use("/",authRoutes);
 app.use("/api/v1/tenants",tenantRoutes);
-// app.use("/api/v1/get-token",workspacesRoutes)
+app.use("/api/v1/get-token",workspacesRoutes)
 
 
 
