@@ -25,7 +25,9 @@ exports.getAllRoles = async (req, res, next) => {
 // CREATE ROLE
 exports.createRole = async (req, res, next) => {
   try {
-    const { name, description,tenantId } = req.body;
+    const { name, description } = req.body;
+
+  
     const existingRole = await Role.findOne({ where: { name } });
     if (existingRole) {
       return next(createError.createError(500, "Role already defined "));
@@ -34,7 +36,7 @@ exports.createRole = async (req, res, next) => {
     const newURole = await Role.create({
       name,
       description,
-      tenantId
+      TenantId: req.user.currentTenant
     });
 
     res
