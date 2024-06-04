@@ -7,9 +7,11 @@ const app = express();
 app.use(bodyParser.json());
 const { URLSearchParams } = require('url');
 
-const tenantId = '80dd5331-c6a7-48ef-9341-097b33c8f6cc'; // Replace with your Tenant ID
-const clientId = 'b505a8a8-5160-4c22-96fc-ff5ec5458a05'; // Replace with your Client ID
-const clientSecret = 'SWO8Q~0zRf8hp-UwPub0IByO2nyzm9MedxtMCbVv'; // Replace with your Client Secret
+
+
+// const tenantId = '80dd5331-c6a7-48ef-9341-097b33c8f6cc'; // Replace with your Tenant ID
+// const clientId = 'b505a8a8-5160-4c22-96fc-ff5ec5458a05'; // Replace with your Client ID
+// const clientSecret = 'SWO8Q~0zRf8hp-UwPub0IByO2nyzm9MedxtMCbVv'; // Replace with your Client Secret
 //80dd5331-c6a7-48ef-9341-097b33c8f6cc
 
 //0e127f52-fdfc-409b-8ae3-6fa4fa9b4f46
@@ -19,27 +21,27 @@ const clientSecret = 'SWO8Q~0zRf8hp-UwPub0IByO2nyzm9MedxtMCbVv'; // Replace with
 
 
 const getToken = async (res) => {
-    const tokenUrl = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;
+    const tokenUrl = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/v2.0/token`;
     const params = new URLSearchParams();
     params.append('grant_type', 'client_credentials');
-    params.append('client_id', clientId);
-    params.append('client_secret', clientSecret);
+    params.append('client_id', process.env.CLIENT_ID);
+    params.append('client_secret', process.env.CLIENT_SECRET);
     params.append('scope', 'https://analysis.windows.net/powerbi/api/.default');
 
     try {
         const response = await axios.post(tokenUrl, params);
-        return response.data.access_token;
+        return response?.data?.access_token;
     } catch (error) {
         // return res.status().json(error)
         console.error('Error getting token:', error);
     }
 };
 exports.getAccessToken = async (req, res, next) => {
-    const tokenUrl = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;
+    const tokenUrl = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/v2.0/token`;
     const params = new URLSearchParams();
     params.append('grant_type', 'client_credentials');
-    params.append('client_id', clientId);
-    params.append('client_secret', clientSecret);
+    params.append('client_id', process.env.CLIENT_ID);
+    params.append('client_secret', process.env.CLIENT_SECRET);
     params.append('scope', 'https://analysis.windows.net/powerbi/api/.default');
 
     try {
@@ -64,11 +66,11 @@ exports.getWorkspaces= async(req,res,next)=>{
 
         
 
-        const tokenUrl = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;
+        const tokenUrl = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/v2.0/token`;
         const params = new URLSearchParams();
         params.append('grant_type', 'client_credentials');
-        params.append('client_id', clientId);
-        params.append('client_secret', clientSecret);
+        params.append('client_id', process.env.CLIENT_ID);
+        params.append('client_secret', process.env.CLIENT_SECRET);
         params.append('scope', 'https://analysis.windows.net/powerbi/api/.default');
     
        
@@ -92,6 +94,7 @@ exports.getWorkspaces= async(req,res,next)=>{
         });
         return res.status(200).json(response1.data);
     } catch (error) {
+        console.log(error)
      
         return next(createError.createError(500,error))
         
