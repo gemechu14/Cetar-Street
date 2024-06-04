@@ -8,14 +8,14 @@ const Permission = require("../models/permission.js");
 const Tenant = require("../models/tenant.js");
 
 
-const signToken = (id, email,permissions,tenant) => {
+const signToken = (id, email,permissions,tenant,defaultTenant,currentTenant) => {
     try {
   
-      const token = jwt.sign({ id, email,permissions ,tenant}, 'secret', {
+      const token = jwt.sign({ id, email,permissions ,tenant,defaultTenant,currentTenant}, 'secret', {
         expiresIn: '7d'
       })
   
-      const refreshToken = jwt.sign({ id, email,permissions,tenant }, 'refreshSecret', {
+      const refreshToken = jwt.sign({ id, email,permissions,tenant,defaultTenant,currentTenant }, 'refreshSecret', {
         expiresIn: '90d' 
       })
       return  { token, refreshToken }
@@ -27,7 +27,10 @@ const signToken = (id, email,permissions,tenant) => {
   
   const createSendToken = async (user, statusCode, res) => {
     try {
-      const {token,refreshToken} = signToken(user.id, user.email,user.permissions,user.tenant);
+      const {token,refreshToken} = signToken(user.id, user.email,user.permissions,user.tenant,user.defaultTenant,user.defaultTenant);
+     
+      await User.update({currentTenant:user.defaultTenant},{where:{id:user.id}})
+      // await user.update({currentTenant:user.defaultTenant})
       const cookieOptions = {
         expires: new Date(Date.now() + 1000 * 24 * 60 * 60 * 1000),
   
@@ -102,13 +105,15 @@ const tenantIds = user.Tenants.map(tenant => tenant.id);
         email: user.email,
         phoneNumber: user.phoneNumber,
         isSuperTenant: user.isSuperTenant,
+        defaultTenant:user.defaultTenant,
+        currentTenant: user.defaultTenant,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-        permissions: permissions    ,
+        permissions: permissions,
         tenant: tenantIds
       };
       
-
+    
   
     
     

@@ -72,7 +72,8 @@ exports.createUser= async (req, res,next) => {
       email,
       password,
       phoneNumber,
-      isSuperTenant:true
+      isSuperTenant:true,
+      defaultTenant: tenant.id
     }, {transaction});
 
    
@@ -80,7 +81,7 @@ exports.createUser= async (req, res,next) => {
       UserId: newUser.id,
       RoleId: defaultRole.id,
     },{transaction});
-
+   
   await UserTenant.create({
     UserId: newUser.id,
     TenantId: tenant.id,

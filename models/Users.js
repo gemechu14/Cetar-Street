@@ -24,7 +24,14 @@ const User = sequelize.define("User", {
   isSuperTenant:{
     type:DataTypes.BOOLEAN,
     defaultValue: false
-  }
+  },
+  defaultTenant:{
+    type: DataTypes.STRING,
+  },
+  currentTenant:{
+    type: DataTypes.STRING,
+  },
+  
 });
 
 User.beforeCreate((user, options) => {

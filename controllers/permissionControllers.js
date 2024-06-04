@@ -1,5 +1,6 @@
 const Permission = require("../models/permission.js");
-const createError=require("../utils/errorResponse.js")
+const createError=require("../utils/errorResponse.js");
+
 
 
 // GET ALL USER
