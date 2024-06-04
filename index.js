@@ -31,7 +31,7 @@ app.use("/api/v1/roles", roleRoutes);
 app.use("/api/v1/permissions",permissionRoutes);
 app.use("/",authRoutes);
 app.use("/api/v1/tenants",tenantRoutes);
-app.use("/api/v1/get-token",workspacesRoutes)
+// app.use("/api/v1/get-token",workspacesRoutes)
 
 
 
